@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 
-function BookCard({ book }) {
+function MovieCard({ movie }) {
 
-  const { id, title, author, image, abstract, avg_vote } = book;
+  const { id, title, director, image, abstract, avg_vote } = movie;
 
   return (
     <article className='relative border h-full'>
@@ -12,7 +12,7 @@ function BookCard({ book }) {
           {title}
         </h3>
         <p className='italic text-xs'>
-          {author}
+          {director}
         </p>
         <p className='text-xs text-gray-200 my-4'>
           {abstract}
@@ -20,10 +20,10 @@ function BookCard({ book }) {
         <div>
           { avg_vote }
         </div>
-        <Link className='bg-blue-500 hover:bg-blue-600 text-white px-3 text-xs py-2 rounded-md inline-block' to={`/books/${id}`}>Read more</Link>
+        <Link className='bg-blue-500 hover:bg-blue-600 text-white px-3 text-xs py-2 rounded-md inline-block' to={`api/movies/${id}`}>Read more</Link>
       </div>
     </article>
   )
 }
 
-export default BookCard;
+export default MovieCard;
