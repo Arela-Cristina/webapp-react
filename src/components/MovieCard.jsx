@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import StarsRating from './StarsRating';
 
 function MovieCard({ movie }) {
 
@@ -20,7 +21,7 @@ function MovieCard({ movie }) {
           {abstract}
         </p>
         <div>
-          { avg_vote }
+          <StarsRating className='size-4 pb-2' vote={avg_vote} />
         </div>
         <Link className='bg-blue-500 hover:bg-blue-600 text-white px-3 text-xs py-2 rounded-md inline-block' to={`movies/${id}`}>Read more</Link>
       </div>
