@@ -1,17 +1,18 @@
 import { useState } from 'react';
+import axios from 'axios';
 
 const initialFormData = {
-    nome: '',
+    name: '',
     text: '',
     vote: '',
 }
 
-function FormReview() {
+function FormReview({id, onSucces = () => { }}) {
 
-    const [formData, setFormData] = useState([initialFormData])
+    const [formData, setFormData] = useState(initialFormData);
+    // const [isFormValid,setIsFormValid] = useState(true) //validazione client
 
     //evento per gestioni dei campi dei form 
-
     function handleChange(e) {
         const { name, value } = e.target
 
@@ -21,6 +22,39 @@ function FormReview() {
             [name]: value,
         })
     }
+
+    //evento per la gestione del form
+    function sendReview(e) {
+        e.preventDefault()
+        console.log('form inviato, adesso puoi salvare i dati nel db')
+        // setFormValid(true)
+        const data = {
+            name: formData.name,
+            text: formData.text,
+            vote: parseInt(formData.vote),
+        }
+        console.log('data', data)
+        //validazione client 
+        if (!data.name || !data.vote || data.vote < 1 || data.vote > 5) {
+            console.log('form is not valid')
+            // setIsFormValid(false)
+            return
+        }
+
+        //chiamata axios post
+        axios.post(`http://localhost:3000/api/movies/${id}/reviews`, data)
+            //inviare risposta al db e rifetchare filmPage
+            .then(res => {
+                console.log(res)
+                setFormData(initialFormData)
+                onSucces()
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+
 
     return (
 
@@ -33,7 +67,7 @@ function FormReview() {
                 </div>
             </div>
             <div className='p-4'>
-                <form className='flex flex-col gap-3'>
+                <form onSubmit={sendReview} className='flex flex-col gap-3'>
                     <p className='form-control'>
                         <label htmlFor="name">Nome</label>
                         <input type="text" placeholder='Anonymous' name='name' id='name' value={formData.name} onChange={handleChange} />

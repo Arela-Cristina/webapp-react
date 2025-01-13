@@ -62,7 +62,7 @@ function MoviePage() {
           </ul> :
           <div>Nessuna recensione</div>
         }
-        <FormReview />
+        <FormReview id={id} onSucces={fetchMovie} />
       </section>
       {/* form per nuova recensione */}
     </> :
