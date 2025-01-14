@@ -1,13 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import loaderContext from '../context/LoaderContext';
 import MovieCard from '../components/MovieCard';
 import axios from 'axios';
 
 function HomePage() {
 
+  const {setLoading} = useContext(loaderContext)
+
   const [movies, setMovies] = useState([])
   const [search, setSearch] = useState('')
 
   function fetchMovies() {
+
+    setLoading(true)
 
     axios.get('http://localhost:3000/api/movies',{
       params: {
@@ -20,6 +25,9 @@ function HomePage() {
       })
       .catch(err => {
         console.error(err)
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 
