@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ReviewCard from '../../components/ReviewCard';
 import axios from 'axios';
 import StarsRating from '../../components/StarsRating';
 import FormReview from '../../components/FormReview';
+import loaderContext from '../../context/LoaderContext';
 
 function MoviePage() {
 
+  //context
+  const { setLoading } = useContext(loaderContext)
   // recuperare l'id del libro dal path della rotta
   const [movie, setMovie] = useState(null)
 
@@ -14,6 +17,10 @@ function MoviePage() {
 
 
   function fetchMovie() {
+
+    //
+    setLoading(true)
+
     axios.get(`http://localhost:3000/api/movies/${id}`)
       .then(res => {
         setMovie(res.data)
@@ -21,6 +28,9 @@ function MoviePage() {
       .catch(err => {
         console.error(err)
         // qui dovremmo fare un redirect alla pagina 404
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 
