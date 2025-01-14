@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import loaderContext from '../context/LoaderContext';
 import axios from 'axios';
 
 const initialFormData = {
@@ -7,7 +8,12 @@ const initialFormData = {
     vote: '',
 }
 
-function FormReview({id, onSucces = () => { }}) {
+
+
+function FormReview({ id, onSucces = () => { } }) {
+
+    //context
+    const { setLoading } = useContext(loaderContext)
 
     const [formData, setFormData] = useState(initialFormData);
     // const [isFormValid,setIsFormValid] = useState(true) //validazione client
@@ -41,6 +47,7 @@ function FormReview({id, onSucces = () => { }}) {
             return
         }
 
+        setLoading(true)
         //chiamata axios post
         axios.post(`http://localhost:3000/api/movies/${id}/reviews`, data)
             //inviare risposta al db e rifetchare filmPage
@@ -51,6 +58,7 @@ function FormReview({id, onSucces = () => { }}) {
             })
             .catch(err => {
                 console.log(err)
+                setLoading(false)
             })
     }
 
